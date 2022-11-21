@@ -39,11 +39,22 @@ async function create(
   });
 }
 
+async function updateStatus(
+  ticketId: number,
+  status: TicketStatus
+) {
+  return prisma.ticket.update({
+    where: { id: ticketId },
+    data: { status }
+  });
+}
+
 const ticketRepository = {
   findMany,
   findWithTicketTypeByEnrollmentId,
   findWithEnrollmentByTicketId,
-  create
+  create,
+  updateStatus
 };
 
 export default ticketRepository;

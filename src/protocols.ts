@@ -22,6 +22,13 @@ export type AddressEnrollment = {
 
 }
 
+export type PaymentRequest = {
+  ticketId: number,
+  value: number,
+  cardIssuer: string,
+  cardLastDigits: string
+};
+
 export type RequestError = {
   status: number,
   data: object | null,
