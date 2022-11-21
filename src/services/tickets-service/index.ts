@@ -11,7 +11,7 @@ async function getOneEnrollmentByUserId(userId: number): Promise<Enrollment> {
   return enrollmentRepository.findByUserId(userId);
 }
 
-async function getOneWithTicketTypeByEnrollmentId(userId: number): Promise<GetTicketWhithTicketType> {
+async function getOneWithTicketTypeByEnrollmentId(userId: number): Promise<TicketWithTicketType> {
   const enrollment = await getOneEnrollmentByUserId(userId);
 
   if(!enrollment) {
@@ -27,13 +27,29 @@ async function getOneWithTicketTypeByEnrollmentId(userId: number): Promise<GetTi
   return ticketWithTicketType;
 }
 
-export type GetTicketWhithTicketType = Ticket & {
+async function createTicket(
+  userId: number,
+  ticketTypeId: number
+): Promise<TicketWithTicketType> {
+  const enrollment = await getOneEnrollmentByUserId(userId);
+
+  if(!enrollment) {
+    throw notFoundError();
+  }
+
+  const ticketWithTicketType = await ticketRepository.create(ticketTypeId, enrollment.id);
+  
+  return ticketWithTicketType;
+}
+
+type TicketWithTicketType = Ticket & {
   TicketType: TicketType
 };
 
 const ticketService = {
   getAllTicketTypes,
-  getOneWithTicketTypeByEnrollmentId
+  getOneWithTicketTypeByEnrollmentId,
+  createTicket
 };
 
 export default ticketService;
