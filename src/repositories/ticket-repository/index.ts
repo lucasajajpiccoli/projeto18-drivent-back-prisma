@@ -14,6 +14,15 @@ async function findWithTicketTypeByEnrollmentId(enrollmentId: number) {
   });
 }
 
+async function findWithEnrollmentByTicketId(ticketId: number) {
+  return prisma.ticket.findFirst({
+    where: { id: ticketId },
+    include: {
+      Enrollment: true
+    }
+  });
+}
+
 async function create(
   ticketTypeId: number,
   enrollmentId: number
@@ -33,6 +42,7 @@ async function create(
 const ticketRepository = {
   findMany,
   findWithTicketTypeByEnrollmentId,
+  findWithEnrollmentByTicketId,
   create
 };
 
