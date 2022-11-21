@@ -11,3 +11,15 @@ export async function getTicketTypes(_req: AuthenticatedRequest, res: Response) 
     return res.status(httpStatus.NOT_FOUND).send({});
   }
 }
+
+export async function getTicketByUser(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+
+  try {
+    const ticketWithTicketType = await ticketService.getOneWithTicketTypeByEnrollmentId(userId);
+
+    return res.status(httpStatus.OK).send(ticketWithTicketType);
+  } catch (error) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
+  }
+}
